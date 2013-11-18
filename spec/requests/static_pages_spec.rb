@@ -2,71 +2,77 @@ require 'spec_helper'
 
 describe "Static Pages" do
 
-  let(:base_title) {"Chuntao Lu"}
+  subject { page }
+
+  shared_examples_for 'all static pages' do
+    it { should have_selector('h1', text: heading) }
+    it { should have_selector('title', text: full_title(page_title)) }
+  end
+
+  it "should have the right links on the layout" do
+    visit root_path
+    click_link "About"
+    page.should have_selector 'title', text: full_title('About me')
+    click_link "Contact"
+    page.should have_selector 'title', text: full_title('Contact')
+    click_link "Help"
+    page.should have_selector 'title', text: full_title('Help')
+    click_link "Projects"
+    page.should have_selector 'title', text: full_title('Projects')
+    click_link "Home"
+    click_link "Sign up"
+    page.should have_selector 'title', text: full_title('Sign up')
+    click_link "Chuntao Lu"
+    page.should have_selector 'title', text: full_title('')
+  end
 
   describe "Home page" do
-    it "should have h1 'Lu's homepage'" do
-      visit '/static_pages/home'
-      page.should have_selector('h1', :text => "Lu's homepage")
-    end
 
-    it "should have the title 'Home'" do
-      visit '/static_pages/home'
-      page.should have_selector('title', :text => "#{base_title}")
-    end
-
-    it "should not have a custom page title" do
-      visit '/static_pages/home'
-      page.should_not  have_selector('title', :text => "| Home")
-    end
+    before { visit root_path }
+    #equivolent as below:
+    #before(:each) do
+    #  visit root_path
+    #end
+    let(:heading) { "Lu's homepage" }
+    let(:page_title) { '' }
+    it_should_behave_like 'all static pages'
+    it { should_not  have_selector('title', :text => "| Home") }
   end
 
   describe "Projects" do
-    it "should have h1 'Projects'" do
-      visit '/static_pages/projects'
-      page.should have_selector('h1', :text => "Projects")
-    end
 
-    it "should have the title 'Projects'" do
-      visit '/static_pages/projects'
-      page.should have_selector('title', :text => "#{base_title} | Projects")
-    end
+    before { visit projects_path }
+
+    let(:heading) { 'Projects' }
+    let(:page_title) { 'Projects' }
+    it_should_behave_like 'all static pages'
   end
 
 
   describe "Help page" do
-    it "should have h1 'Help'" do
-      visit '/static_pages/help'
-      page.should have_selector('h1', :text => "Help")
-    end
 
-    it "should have the title 'Help'" do
-      visit '/static_pages/help'
-      page.should have_selector('title', :text => "#{base_title} | Help")
-    end
+    before { visit help_path }
+
+    let(:heading) { 'Help' }
+    let(:page_title) { 'Help' }
+    it_should_behave_like 'all static pages'
   end
 
   describe "About page" do
-    it "should have h1 'About me'" do
-      visit '/static_pages/about'
-      page.should have_selector('h1', :text => "About")
-    end
 
-    it "should have the title 'About'" do
-      visit '/static_pages/about'
-      page.should have_selector('title', :text => "#{base_title} | About")
-    end
+    before { visit about_path }
+
+    let(:heading) { 'About' }
+    let(:page_title) { 'About' }
+    it_should_behave_like 'all static pages'
   end
 
   describe "Contact page" do
-    it "should have h1 'About me'" do
-      visit '/static_pages/contact'
-      page.should have_selector('h1', :text => "Contact")
-    end
 
-    it "should have the title 'Contact'" do
-      visit '/static_pages/contact'
-      page.should have_selector('title', :text => "#{base_title} | Contact")
-    end
+    before { visit contact_path }
+
+    let(:heading) { 'Contact' }
+    let(:page_title) { 'Contact' }
+    it_should_behave_like 'all static pages'
   end
 end

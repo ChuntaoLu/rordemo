@@ -9,9 +9,11 @@ Demo::Application.routes.draw do
   match '/about', to: 'static_pages#about'
   match '/projects', to: 'static_pages#projects'
   match '/signup', to: 'users#new'
+  match '/signin', to: 'sessions#new'
+  match '/signout', to: 'sessions#destroy', via: :delete
 
   resources :microposts
-
+  resources :sessions, only: [:new, :create, :destroy]
   resources :users
 
   # The priority is based upon order of creation:

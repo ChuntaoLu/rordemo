@@ -12,7 +12,7 @@ Demo::Application.routes.draw do
   match '/signin', to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete
 
-  resources :microposts
+  resources :microposts, only: [:create, :destroy]
   resources :sessions, only: [:new, :create, :destroy]
   resources :users
 

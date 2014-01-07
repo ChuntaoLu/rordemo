@@ -43,8 +43,7 @@ describe "Micropost Pages" do
       let(:other) { FactoryGirl.create(:user) }
 
       before do
-        sign_in other
-        visit user_path(user)
+        visit user_path(other)
       end
 
       it { should_not have_link('delete') }
